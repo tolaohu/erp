@@ -1,0 +1,40 @@
+
+    <nb-card style="min-height: 400px;" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="Saving ..." nbSpinnerSize="large">
+        <nb-card-header style="text-align: center;">Progress Picture</nb-card-header>
+        <nb-card-body>
+
+            <form [formGroup]="progressPicturesForm">
+            <div class="row" >
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="project">Project<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                        <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                      </nb-select>
+                    </div>   
+                <div class="form-group" *ngIf="show">
+                <label for="PP">Progress Picture<span>*</span></label><br>
+                <ngx-file-picker [id]="1" (fileSelected)="onFileSelectedPP($event)"></ngx-file-picker>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="show">      
+                <div class="form-group">
+                    <label for="company">Company<span>*</span></label><br>
+                    <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                      <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                    </nb-select>
+                    <span style="color:#dc3545" *ngIf=" (progressPicturesForm.get('companyId').touched) && (progressPicturesForm.get('companyId').errors?.required)">
+                      Company is a required Field !!!
+                    </span>
+                  </div>
+            </div>
+            </div>
+            </form>
+</nb-card-body>
+<div class="spacebtn" *ngIf="show">
+    <button [disabled]="!this.progressPicturesForm.valid" type="button" (click)="onProgressPictureSubmit()"  nbButton [status]="'success'" [size]="'medium'">
+      Submit
+    </button>
+</div>
+</nb-card>
+<!-- <br> value:{{progressPicturesForm.value | json}} -->

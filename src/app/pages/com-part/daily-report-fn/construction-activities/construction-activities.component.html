@@ -1,0 +1,71 @@
+
+    <nb-card style="min-height: 400px;" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="Saving ..." nbSpinnerSize="large">
+       <nb-card-header style="text-align: center;">Construction Activities</nb-card-header>
+        <nb-card-body>
+
+        <form [formGroup]="constructionActivitiesForm">
+            <div class="row" >
+                <div class="col-md-6">       
+                    <div class="form-group">
+                      <label for="project">Project<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                        <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                      </nb-select>
+                    </div>  
+                    <div class="form-group" *ngIf="show">
+                      <label for="constructionactivities">Construction Activities<span>*</span></label>
+                      <textarea formControlName="constructionActivities" rows="5" nbInput fullWidth id="constructionactivities"  placeholder="CONSTRUCTION ACTIVITIES"></textarea>
+                      <span>
+                        <span style="color:#dc3545" *ngIf=" (constructionActivitiesForm.get('constructionActivities').touched) && (constructionActivitiesForm.get('constructionActivities').errors?.required)">
+                          Construction Activities is a required Field !!!
+                        </span>
+                        <span style="color:#dc3545" *ngIf=" (constructionActivitiesForm.get('constructionActivities').dirty) && (constructionActivitiesForm.get('constructionActivities').errors?.minlength)">
+                         Minimum Length of words is 500 !!!
+                        </span>
+                      </span>
+                    </div>  
+                    <div class="form-group" *ngIf="show">
+                      <label for="planFollowDay">Planning For The Following Day<span>*</span> </label>
+                      <textarea formControlName="followingDayPlan" rows="5" nbInput fullWidth id="planFollowDay"  placeholder="PLANNING FOR THE FOLLOWING DAY "></textarea>
+                      <span>
+                        <span style="color:#dc3545" *ngIf=" (constructionActivitiesForm.get('followingDayPlan').touched) && (constructionActivitiesForm.get('followingDayPlan').errors?.required)">
+                          Planning For The Following Day is a required Field !!!
+                        </span>
+                        <span style="color:#dc3545" *ngIf=" (constructionActivitiesForm.get('followingDayPlan').dirty) && (constructionActivitiesForm.get('followingDayPlan').errors?.minlength)">
+                         Minimum Length of words is 500 !!!
+                        </span>
+                      </span>
+                    </div>
+              </div>
+              <div class="col-md-6" *ngIf="show">         
+                <div class="form-group">
+                    <label for="company">Company<span>*</span></label><br>
+                    <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                      <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                    </nb-select>
+                    <span style="color:#dc3545" *ngIf="(constructionActivitiesForm.get('companyId').touched) && (constructionActivitiesForm.get('companyId').errors?.required)">
+                      Company is a required Field !!!
+                    </span>
+                  </div>
+                  <div class="form-group">
+                    <label for="dailyProgress">Daily Progress / Work Done<span>*</span></label>
+                    <textarea formControlName="dailyProgress" rows="5" nbInput fullWidth id="dailyProgress"  placeholder="DAILY PROGRESS / WORK DONE"></textarea>
+                    <span>
+                      <span style="color:#dc3545" *ngIf=" (constructionActivitiesForm.get('dailyProgress').touched) && (constructionActivitiesForm.get('dailyProgress').errors?.required)">
+                        Daily Progress / Work Done is a required Field !!!
+                      </span>
+                      <span style="color:#dc3545" *ngIf=" (constructionActivitiesForm.get('dailyProgress').dirty) && (constructionActivitiesForm.get('dailyProgress').errors?.minlength)">
+                       Minimum Length of words is 500 !!!
+                      </span>
+                    </span>
+                  </div>
+            </div>
+            </div>
+            <button [disabled]="!this.constructionActivitiesForm.valid"  type="button" *ngIf="show" (click)="onConstructionActiviesSubmit()"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+        </form>
+            
+</nb-card-body>
+</nb-card>
+<!-- <br> value:{{constructionActivitiesForm.value | json}} -->

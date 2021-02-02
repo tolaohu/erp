@@ -1,0 +1,49 @@
+
+    <nb-card style="min-height: 400px;" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="Saving ..." nbSpinnerSize="large">
+        <nb-card-header style="text-align: center;" >General Summary</nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="genSummaryForm">
+            <div class="row" >
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="project">Project<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                        <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                      </nb-select>
+                    </div>    
+              </div>
+              <div class="col-md-6" *ngIf="show">      
+                  <div class="form-group">
+                    <label for="company">Company<span>*</span></label><br>
+                    <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                      <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                    </nb-select>
+                    <span style="color:#dc3545" *ngIf=" (genSummaryForm.get('companyId').touched) && (genSummaryForm.get('companyId').errors?.required)">
+                      Company is a required Field !!!
+                    </span>
+                  </div>
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">  
+              <div class="form-group" *ngIf="show">
+                <label for="GeneralSummary">Summary<span>*</span></label>
+                <textarea rows="5" nbInput fullWidth id="GeneralSummary"  placeholder="General Summary" formControlName="generalSummary"></textarea>
+                <span>
+                <span style="color:#dc3545" *ngIf=" (genSummaryForm.get('generalSummary').touched) && (genSummaryForm.get('generalSummary').errors?.required)">
+                  Summary is a required Field !!!
+                </span>
+                <span style="color:#dc3545" *ngIf=" (genSummaryForm.get('generalSummary').dirty) && (genSummaryForm.get('generalSummary').errors?.minlength)">
+                 Minimum Length of words is 500 !!!
+                </span>
+              </span>
+              </div>
+              </div>
+            </div>
+            <button  type="button" [disabled]="!this.genSummaryForm.valid" *ngIf="show" (click)="onGeneralSummarySubmit()"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+        </form>
+</nb-card-body>
+</nb-card>
+<!-- <br> value:{{genSummaryForm.value | json}} -->

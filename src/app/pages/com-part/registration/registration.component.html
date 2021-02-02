@@ -1,0 +1,119 @@
+
+    <nb-card style="min-height: 400px;" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="Saving ..." nbSpinnerSize="large">
+        <nb-card-header style="text-align: center;" ><span class="labelst">User Registration</span></nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="registrationForm">
+                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="firstName" class="labelst">First Name</label>
+                            <input type="text" nbInput fullWidth id="firstName" placeholder="first Name" formControlName="firstName"> 
+                            <span style="color:#dc3545" *ngIf=" (registrationForm.get('firstName').touched) && (registrationForm.get('firstName').errors?.required)">
+                                First Name is a required Field !!!
+                              </span>
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lastName" class="labelst">Last Name</label>
+                            <input type="text" nbInput fullWidth id="lastName" placeholder="last Name" formControlName="lastName">
+                            <span style="color:#dc3545" *ngIf=" (registrationForm.get('lastName').touched) && (registrationForm.get('lastName').errors?.required)">
+                                Last Name is a required Field !!!
+                              </span>
+                          </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email" class="labelst">Email</label>
+                            <input type="email" nbInput fullWidth id="email" placeholder="email" formControlName="email">
+                            <span>
+                            <span style="color:#dc3545" *ngIf=" (registrationForm.get('email').touched) && (registrationForm.get('email').errors?.required)">
+                                Email is a required Field !!!
+                              </span>
+                              <span style="color:#dc3545" *ngIf=" (registrationForm.get('email').touched) && (registrationForm.get('email').errors?.email)">
+                                  please enter a valid Email !!!
+                                </span>
+                            </span>
+                          </div>
+                        </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phoneNumber" class="labelst">Phone Number</label>
+                            <input type="tel" pattern="[0-9]{11}" nbInput fullWidth id="phoneNumber" placeholder="08075635423" formControlName="phoneNumber"><span>
+                                <span style="color:#dc3545" *ngIf=" (registrationForm.get('phoneNumber').touched) && (registrationForm.get('phoneNumber').errors?.required)">
+                                    Phone Number is a required Field !!!
+                                  </span>
+                                  <span style="color:#dc3545" *ngIf=" (registrationForm.get('phoneNumber').touched) && (registrationForm.get('phoneNumber').errors?.pattern)">
+                                    please enter a valid Phone Number !!!
+                                    </span>
+                                </span>
+                          </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="company" class="label">Company</label><br>
+                                <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                                <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                                </nb-select>
+                                <span style="color:#dc3545" *ngIf=" (registrationForm.get('companyId').touched) && (registrationForm.get('companyId').errors?.required)">
+                                    Company is a required Field !!!
+                                  </span>
+                            </div>
+                        </div>
+                    <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="role" class="label">Role</label><br>
+                                <nb-select fullWidth placeholder="Select Role" id="role" formControlName="roleId">
+                                <nb-option [value]="item.id"  *ngFor="let item of roleList">{{item.name}}</nb-option>
+                                </nb-select>
+                                <span style="color:#dc3545" *ngIf=" (registrationForm.get('roleId').touched) && (registrationForm.get('roleId').errors?.required)">
+                                    Role is a required Field !!!
+                                  </span>
+                            </div>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="password" class="labelst">Password</label>
+                            <input type="password" nbInput fullWidth id="password" placeholder="password" formControlName="password">
+                            <span style="color:#dc3545" *ngIf=" (registrationForm.get('password').touched) && (registrationForm.get('password').errors?.required)">
+                                Password is a required Field !!!
+                              </span>
+                              <span style="color:#dc3545" *ngIf=" (registrationForm.get('password').dirty) && (registrationForm.get('password').errors?.pattern)">
+                                Minimum of Eight characters and must contain an upper & lower case Letter, a digit and a Special character  !!!
+                              </span>
+                          </div>
+                          <div class="form-group">
+                              <label for="staffNumber" class="labelst">Staff Number</label>
+                              <input type="text" nbInput fullWidth id="staffNumber" placeholder="staffNumber" formControlName="staffNumber">
+                              <span style="color:#dc3545" *ngIf=" (registrationForm.get('staffNumber').touched) && (registrationForm.get('staffNumber').errors?.required)">
+                                  Staff Number is a required Field !!!
+                                </span>
+                            </div>
+                        </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="confirmPassword" class="labelst">Confirm Password</label>
+                            <input type="password" nbInput fullWidth id="confirmPassword" placeholder="confirmPassword" formControlName="confirmPassword">
+                            <span>
+                                <span style="color:#dc3545" *ngIf=" (registrationForm.get('confirmPassword').touched) && (registrationForm.get('confirmPassword').errors?.required)">
+                                    Confirm Password is a required Field !!!
+                                  </span>
+                                  <span style="color:#dc3545" *ngIf=" (registrationForm.get('confirmPassword').touched) && (registrationForm.get('confirmPassword').errors?.confirm)">
+                                      Two passwords entered are inconsistent !!!
+                                    </span>
+                                </span>
+                          </div>
+                        </div>
+                </div>
+            <button  type="button" (click)="onSubmit()"  [disabled]="!(this.registrationForm.valid)"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+        </form>
+</nb-card-body>
+</nb-card>

@@ -1,0 +1,202 @@
+
+<div class="spacebtn" *ngIf="!vr">
+<button  type="button" (click)="vr = 1" nbButton outline [status]="'info'" [size]="'medium'">Construction Query</button>
+<button  type="button" (click)="vr = 2" nbButton outline [status]="'info'" [size]="'medium'">Attention Reply</button>
+<button  type="button" (click)="vr = 3" nbButton outline [status]="'info'" [size]="'medium'">Initiator Reply</button>
+</div>
+
+<form [formGroup]="constructionReport" *ngIf="vr==1">
+    <nb-card style="min-height: 400px;">
+        <nb-card-header style="text-align: center;">Construction Technical Queries</nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="project">Project<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                        <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                      </nb-select>
+                    </div>    
+                    <div class="form-group" *ngIf="show">
+                      <label for="CtqTitle">Title<span>*</span></label>
+                      <input type="text" formControlName="CtqTitle" nbInput fullWidth id="CtqTitle"  placeholder="Construction Report Title"/>
+                      <span style="color:#dc3545" *ngIf=" (constructionReport.get('CtqTitle').touched) && (constructionReport.get('CtqTitle').errors?.required)">
+                        Title is a required Field !!!
+                      </span>
+                    </div>
+              </div>
+              <div class="col-md-6" *ngIf="show">      
+                  <div class="form-group">
+                    <label for="CtqNumber">Number<span>*</span></label>
+                    <input type="number" formControlName="CtqNumber" nbInput fullWidth id="CtqNumber"  placeholder="Construction Report Number"/>
+                    <span style="color:#dc3545" *ngIf=" (constructionReport.get('CtqNumber').touched) && (constructionReport.get('CtqNumber').errors?.required)">
+                      Number is a required Field !!!
+                    </span>
+                </div>    
+                  <div class="form-group">
+                    <label for="CtqDescription">Description<span>*</span></label>
+                    <textarea formControlName="CtqDescription" nbInput fullWidth id="CtqDescription"  placeholder="Construction Report Description"></textarea>
+                    <span style="color:#dc3545" *ngIf=" (constructionReport.get('CtqDescription').touched) && (constructionReport.get('CtqDescription').errors?.required)">
+                      Description is a required Field !!!
+                    </span>
+                  </div>
+            </div>
+            </div>
+            <div class="row" *ngIf="show">
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="CountryId">Country<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Country" id="CountryId" (selectedChange)="onCountry($event)" formControlName="CountryId">
+                        <nb-option [value]="item.countryId"  *ngFor="let item of nationalityList">{{item.countryName}}</nb-option>
+                      </nb-select>
+                      <span style="color:#dc3545" *ngIf=" (constructionReport.get('CountryId').touched) && (constructionReport.get('CountryId').errors?.required)">
+                        Country is a required Field !!!
+                      </span>
+                    </div>      
+                    <div class="form-group">
+                      <label for="StateId">State<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select State" id="StateId" (selectedChange)="onState($event)" formControlName="StateId">
+                        <nb-option [value]="item.stateId"  *ngFor="let item of stateList">{{item.stateName}}</nb-option>
+                      </nb-select>
+                      <span style="color:#dc3545" *ngIf=" (constructionReport.get('StateId').touched) && (constructionReport.get('StateId').errors?.required)">
+                        State is a required Field !!!
+                      </span>
+                    </div> 
+              </div>
+              <div class="col-md-6">     
+                <div class="form-group">
+                  <label for="CityId">City<span>*</span></label><br>
+                  <nb-select fullWidth placeholder="Select City" id="CityId"  formControlName="CityId">
+                    <nb-option [value]="item.cityId"  *ngFor="let item of cityList">{{item.cityName}}</nb-option>
+                  </nb-select>
+                  <span style="color:#dc3545" *ngIf=" (constructionReport.get('CityId').touched) && (constructionReport.get('CityId').errors?.required)">
+                    City is a required Field !!!
+                  </span>
+                </div>    
+            </div>
+            </div>
+            <div class="row" *ngIf="show">
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="AttendeeId">Attendee<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Staff in Attendant" id="AttendeeId" formControlName="AttendeeId">
+                        <nb-option [value]="item.staffId"  *ngFor="let item of staffList">{{item.firstName}} {{item.lastName}}</nb-option>
+                      </nb-select>
+                      <span style="color:#dc3545" *ngIf=" (constructionReport.get('AttendeeId').touched) && (constructionReport.get('AttendeeId').errors?.required)">
+                        Attendee is a required Field !!!
+                      </span>
+                    </div>      
+                    <div class="form-group">
+                      <label for="QueryDate">Query Date<span>*</span></label><br>
+                      <input disabled  fullWidth nbInput placeholder="Pick Query Date" [nbDatepicker]="queryDate" formControlName="QueryDate">
+                      <nb-datepicker  #queryDate></nb-datepicker>
+                    </div>
+                    <div class="form-group">
+                    <label for="DrawingFile">Drawing File<span>*</span></label><br>
+                    <ngx-file-picker [id]="1" (fileSelected)="onDrawingFile($event)"></ngx-file-picker>
+                  </div>
+              </div>
+              <div class="col-md-6">   
+                <div class="form-group">
+                  <label for="Priority">Priority<span>*</span></label>
+                  <nb-select fullWidth placeholder="Select Priority" id="Priority" formControlName="Priority">
+                    <nb-option [value]="0"  >Low</nb-option>
+                    <nb-option [value]="1"  >Medium</nb-option>
+                    <nb-option [value]="2"  >High</nb-option>
+                  </nb-select>
+                </div>      
+                <div class="form-group">
+                  <label for="ReplyRequiredBy">Reply Date<span>*</span></label><br>
+                  <input  fullWidth nbInput placeholder="Pick Reply RequiredBy Date" [nbDatepicker]="replyDate" formControlName="ReplyRequiredBy">
+                  <nb-datepicker  #replyDate></nb-datepicker>
+                  <span style="color:#dc3545" *ngIf=" (constructionReport.get('ReplyRequiredBy').touched) && (constructionReport.get('ReplyRequiredBy').errors?.required)">
+                    Reply Date is a required Field !!!
+                  </span>
+                </div>     
+            </div>
+            </div>
+            </nb-card-body>
+            <div *ngIf="show">
+            <button  type="button" [disabled]="!this.constructionReport.valid" (click)="onSubmit()" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="" nbSpinnerSize="tiny"   nbButton outline [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+            </div>
+            </nb-card>
+            </form>
+            <form [formGroup]="replyReport" *ngIf="vr==2"  >
+              <nb-card style="min-height: 400px;">
+                  <nb-card-header style="text-align: center;">Attention Reply</nb-card-header>
+                  <nb-card-body>
+                      <div class="row">
+                          <div class="col-md-6">      
+                              <div class="form-group">
+                                <label for="ctqId">Construction Technical Query<span>*</span></label><br>
+                                <nb-select fullWidth placeholder="Select ctqId" id="ctqId" (selectedChange)="onCtqSelect($event)">
+                                  <nb-option [value]="item.ctqid"  *ngFor="let item of ctqAttendList">{{item.ctqtitle}}</nb-option>
+                                </nb-select>
+                              </div>    
+                              <div class="form-group" *ngIf="show">
+                                <label for="attentionReply">Reply<span>*</span></label>
+                                <textarea type="text" formControlName="attentionReply" nbInput fullWidth id="attentionReply"  placeholder="Attention Reply"></textarea>
+                                <span style="color:#dc3545" *ngIf=" (replyReport.get('attentionReply').touched) && (replyReport.get('attentionReply').errors?.required)">
+                                  Reply is a required Field !!!
+                                </span>
+                              </div>     
+                              <!-- <div class="form-group" *ngIf="show">
+                                <label for="attentionDate">Reply Date<span>*</span></label><br>
+                                <input  fullWidth nbInput placeholder="Reply Date" [nbDatepicker]="attentionDate" formControlName="attentionDate">
+                                <nb-datepicker  #attentionDate></nb-datepicker>
+                              </div> -->
+                        </div>
+                      </div>
+                      </nb-card-body>
+                      <div *ngIf="show">
+                      <button  type="button" [disabled]="!this.replyReport.valid" (click)="onReply()" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="" nbSpinnerSize="tiny"   nbButton outline [status]="'success'" [size]="'medium'">
+                        Submit
+                      </button>
+                      </div>
+                      </nb-card>
+                      </form>
+                      <form [formGroup]="acceptanceReport" *ngIf="vr==3"  >
+                        <nb-card style="min-height: 400px;">
+                            <nb-card-header style="text-align: center;">Initiator Reply</nb-card-header>
+                            <nb-card-body>
+                                <div class="row">
+                                    <div class="col-md-6">      
+                                      <div class="form-group">
+                                        <label for="ctqId">Construction Technical Query<span>*</span></label><br>
+                                        <nb-select fullWidth placeholder="Select ctqId" id="ctqId" (selectedChange)="onCtqSelect($event)">
+                                          <nb-option [value]="item.ctqid"  *ngFor="let item of ctqInitList">{{item.ctqtitle}}</nb-option>
+                                        </nb-select>
+                                      </div>    
+                                        <div class="form-group" *ngIf="show">
+                                          <label for="initiatorReply">Reply<span>*</span></label>
+                                          <textarea type="text" formControlName="initiatorReply" nbInput fullWidth id="initiatorReply"  placeholder="Initiator Reply"></textarea>
+                                          <span style="color:#dc3545" *ngIf=" (acceptanceReport.get('initiatorReply').touched) && (acceptanceReport.get('initiatorReply').errors?.required)">
+                                            Reply is a required Field !!!
+                                          </span>
+                                        </div>       
+                                        <div class="form-group" *ngIf="show">
+                                          <label for="initiatorAcceptance">Initiator Acceptance<span>*</span></label><br>
+                                          <nb-select fullWidth placeholder="Select Project" id="initiatorAcceptance" formControlName="initiatorAcceptance">
+                                            <nb-option [value]="0">Open</nb-option>
+                                            <nb-option [value]="1">Query</nb-option>
+                                            <nb-option [value]="2">Approved</nb-option>
+                                            <nb-option [value]="3">Reject</nb-option>
+                                          </nb-select>
+                                        </div>      
+                                        <!-- <div class="form-group" *ngIf="show">
+                                          <label for="initiatorReplyDate">Reply Date<span>*</span></label><br>
+                                          <input  fullWidth nbInput placeholder="Reply Date" [nbDatepicker]="initiatorReplyDate" formControlName="initiatorReplyDate">
+                                          <nb-datepicker  #initiatorReplyDate></nb-datepicker>
+                                        </div> -->
+                                  </div>
+                                </div>
+                                </nb-card-body>
+                                <div *ngIf="show">
+                                <button [disabled]="!this.acceptanceReport.valid" type="button" (click)="onAccept()" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="" nbSpinnerSize="tiny"   nbButton outline [status]="'success'" [size]="'medium'">
+                                  Submit
+                                </button>
+                                </div>
+                                </nb-card>
+                                </form>

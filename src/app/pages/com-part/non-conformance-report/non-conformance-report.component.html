@@ -1,0 +1,167 @@
+<form [formGroup]="nonConformanceReport">
+    <nb-card style="min-height: 400px;" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="Saving ..." nbSpinnerSize="large">
+        <nb-card-header style="text-align: center;">Non-Conformance Reporting</nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-6">      
+                      <div class="form-group">
+                        <label for="project">Project<span>*</span></label><br>
+                        <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="ProjectId">
+                          <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                        </nb-select>
+                      </div>    
+                      <div class="form-group" *ngIf="show">
+                          <label for="title">Title<span>*</span></label>
+                          <input type="text" nbInput fullWidth id="title" placeholder="Title" formControlName="Title">
+                          <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('Title').touched) && (nonConformanceReport.get('Title').errors?.required)">
+                            Title is a required Field !!!
+                          </span>
+                        </div>  
+                    </div>
+                    
+                <div class="col-md-6" *ngIf="show">
+                  <div class="form-group">
+                    <label for="Description">Description<span>*</span></label>
+                    <textarea rows="5" nbInput fullWidth id="Description"  placeholder="Description" formControlName="Description"></textarea>
+                    <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('Description').touched) && (nonConformanceReport.get('Description').errors?.required)">
+                      Description is a required Field !!!
+                    </span>
+                  </div>
+              </div>
+
+            </div>
+            <div class="row" *ngIf="show">
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="SupplierId">Supplier<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Supplier" id="SupplierId" formControlName="SupplierId">
+                        <nb-option [value]="item.supplierId"  *ngFor="let item of supplierList">{{item.companyName}}</nb-option>
+                      </nb-select>
+                      <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('SupplierId').touched) && (nonConformanceReport.get('SupplierId').errors?.required)">
+                        Supplier is a required Field !!!
+                      </span>
+                    </div>    
+                    <div class="form-group">
+                      <label for="DocNumber">Document Number<span>*</span></label>
+                      <input type="text" formControlName="DocumentNumber" nbInput fullWidth id="DocNumber"  placeholder="Document Number"/>
+                      <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('DocumentNumber').touched) && (nonConformanceReport.get('DocumentNumber').errors?.required)">
+                        Document Number is a required Field !!!
+                      </span>
+                    </div>    
+                    <div class="form-group">
+                      <label for="TagNumber">Tag Number<span>*</span></label>
+                      <input type="text" formControlName="TagNumber" nbInput fullWidth id="TagNumber"  placeholder="Tag Number"/>
+                      <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('TagNumber').touched) && (nonConformanceReport.get('TagNumber').errors?.required)">
+                        Tag Number is a required Field !!!
+                      </span>
+                    </div>  
+              </div>
+              <div class="col-md-6">  
+                <div class="form-group">
+                  <label for="DrawingReferenceNumber">Drawing Reference Number<span>*</span></label>
+                  <input type="text" formControlName="DrawingReferenceNumber" nbInput fullWidth id="DrawingReferenceNumber"  placeholder="Drawing Reference Number"/>
+                  <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('DrawingReferenceNumber').touched) && (nonConformanceReport.get('DrawingReferenceNumber').errors?.required)">
+                    Drawing Reference Number is a required Field !!!
+                  </span>
+                </div>  
+                <div class="form-group">
+                  <label for="SystemsSubSystems">Report Number<span>*</span></label>
+                  <input type="text" formControlName="SystemsSubSystems" nbInput fullWidth id="SystemsSubSystems"  placeholder="Systems Sub-Systems"/>
+                  <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('SystemsSubSystems').touched) && (nonConformanceReport.get('SystemsSubSystems').errors?.required)">
+                    Report Number is a required Field !!!
+                  </span>
+                </div>     
+                <div class="form-group">
+                  <label for="AreaModuleNumber">Area Module Number<span>*</span></label>
+                  <input type="text" formControlName="AreaModuleNumber" nbInput fullWidth id="AreaModuleNumber"  placeholder="Area Module Number"/>
+                  <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('AreaModuleNumber').touched) && (nonConformanceReport.get('AreaModuleNumber').errors?.required)">
+                    Area Module Number is a required Field !!!
+                  </span>
+                </div>  
+            </div>
+            </div>
+            <div class="row" *ngIf="show">
+                <div class="col-md-6">   
+                    <div class="form-group">
+                      <label for="CountryId">Country<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Country" id="CountryId" formControlName="CountryId">
+                        <nb-option [value]="item.countryId"  *ngFor="let item of nationalityList">{{item.countryName}}</nb-option>
+                      </nb-select>
+                      <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('CountryId').touched) && (nonConformanceReport.get('CountryId').errors?.required)">
+                        Country is a required Field !!!
+                      </span>
+                    </div>  
+                    <div class="form-group">
+                      <label for="CityId">City<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select City" id="CityId"  formControlName="CityId">
+                        <nb-option [value]="item.cityId"  *ngFor="let item of cityList">{{item.cityName}}</nb-option>
+                      </nb-select>
+                      <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('CityId').touched) && (nonConformanceReport.get('CityId').errors?.required)">
+                        City is a required Field !!!
+                      </span>
+                    </div>   
+                    <div class="form-group">
+                      <label for="ReqEngApproval" style="margin-bottom: 20px;">Disposition Requires Engr. Approval?</label><br>
+                      <!-- <nb-checkbox  formControlName="ReqEngApproval" status="basic"></nb-checkbox> -->
+                      <nb-radio-group formControlName="ReqEngApproval" style="display: flex;">
+                        <nb-radio value="true">Yes</nb-radio>
+                        <nb-radio value="false">No</nb-radio>
+                      </nb-radio-group>
+                    </div>
+              </div>
+              <div class="col-md-6">       
+                <div class="form-group">
+                  <label for="StateId">State<span>*</span></label><br>
+                  <nb-select fullWidth placeholder="Select State" id="StateId"  formControlName="StateId">
+                    <nb-option [value]="item.stateId"  *ngFor="let item of stateList">{{item.stateName}}</nb-option>
+                  </nb-select>
+                  <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('StateId').touched) && (nonConformanceReport.get('StateId').errors?.required)">
+                    State is a required Field !!!
+                  </span>
+                </div>
+                <div class="form-group">
+                  <label for="Item">Item<span>*</span></label>
+                  <input type="text" formControlName="Item" nbInput fullWidth id="Item"  placeholder="Item">
+                  <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('Item').touched) && (nonConformanceReport.get('Item').errors?.required)">
+                    Item is a required Field !!!
+                  </span>
+                </div> 
+                <div class="form-group">
+                  <label for="DocumentReqViolated">Document And Requirement Violated<span>*</span></label>
+                  <input type="text" formControlName="DocumentReqViolated" nbInput fullWidth id="DocumentReqViolated"  placeholder="Document And Requirement Violated"/>
+                  <span style="color:#dc3545" *ngIf=" (nonConformanceReport.get('DocumentReqViolated').touched) && (nonConformanceReport.get('DocumentReqViolated').errors?.required)">
+                    Document And Requirement Violated is a required Field !!!
+                  </span>
+                </div> 
+            </div>
+            </div>
+            <div class="row" *ngIf="show">
+              <div class="col-md-6">
+              <div class="form-group">
+                <label for="DrawingFile">Drawing File</label><br>
+                <ngx-file-picker [id]="1" (fileSelected)="onDrawingFile($event)"></ngx-file-picker>
+              </div>
+              <div class="form-group">
+                <label for="NCRImages">Description of Non Conformance Images</label><br>
+                <ngx-file-picker [id]="2" (fileSelected)="onNCRImages($event)"></ngx-file-picker>
+              </div>
+            </div>
+            <div class="col-md-6">
+            <div class="form-group">
+              <label for="DescriptionDocuments">Description of Non Conformance Document</label><br>
+              <ngx-file-picker [id]="3" (fileSelected)="onDescriptionDocuments($event)"></ngx-file-picker>
+            </div>
+          </div>
+            </div>
+  
+</nb-card-body>
+<div *ngIf="show">
+<button [disabled]="!this.nonConformanceReport.valid" type="button" (click)="onSubmit()" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="" nbSpinnerSize="tiny"   nbButton  [status]="'success'" [size]="'medium'">
+  Submit
+</button>
+</div>
+</nb-card>
+</form>
+
+
+  <!-- <br> value:{{nonConformanceReport.value | json}} -->

@@ -1,0 +1,341 @@
+
+    <nb-card style="min-height: 400px;" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="Saving ..." nbSpinnerSize="large">
+        <nb-card-header style="text-align: center;" *ngIf="nstage == 1">General Summary</nb-card-header>
+        <nb-card-header style="text-align: center;" *ngIf="nstage == 2">HSE Report</nb-card-header>
+        <nb-card-header style="text-align: center;" *ngIf="nstage == 3">CONSTRUCTION ACTIVITIES</nb-card-header>
+        <nb-card-header style="text-align: center;" *ngIf="nstage == 4">DAILY PROGRESS MEASUREMENT</nb-card-header>
+        <nb-card-header style="text-align: center;" *ngIf="nstage == 5">PROGRESS PICTURE</nb-card-header>
+        <nb-card-header style="text-align: center;" *ngIf="nstage == 6">oTHERS</nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="genSummaryForm" *ngIf="nstage == 1">
+            <div class="row" >
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="project" class="label">Project<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                        <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                      </nb-select>
+                    </div>    
+                    <div class="form-group" *ngIf="show">
+                      <label for="GeneralSummary" class="label">General Summary<span>*</span></label>
+                      <textarea rows="5" nbInput fullWidth id="GeneralSummary"  placeholder="General Summary" formControlName="generalSummary"></textarea>
+                    </div>
+              </div>
+              <div class="col-md-6" *ngIf="show">      
+                  <div class="form-group">
+                    <label for="company" class="label">Company<span>*</span></label><br>
+                    <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                      <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                    </nb-select>
+                  </div>
+            </div>
+            </div>
+            <button  type="button" *ngIf="show" (click)="onGeneralSummarySubmit()"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+        </form>
+
+        <form [formGroup]="hseReportForm" *ngIf="nstage == 2">
+            <ng-container>
+                <div  class="container" formArrayName="srdrHSEReports" *ngFor="let hseRep of srdrHSEReports.controls; let hsei =index">
+                    <div  class="row" [formGroupName]="hsei">
+                        <div class="col-md-6">      
+                            <div class="form-group">
+                              <label attr.for="{{'project' + hsei}}" class="label">Project<span>*</span></label><br>
+                              <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                                <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                              </nb-select>
+                            </div>  
+                            <div class="form-group">
+                              <label attr.for="{{'title' + hsei}}">Title</label>
+                              <input type="text" nbInput fullWidth id="{{'title' + hsei}}" placeholder="Title" formControlName="title">
+                            </div>
+                            <div class="form-group">
+                              <label attr.for="{{'detailsStat' + hsei}}" class="label">Details Statistics</label>
+                              <textarea nbInput fullWidth id="{{'detailsStat' + hsei}}"  placeholder="Details Statistics" formControlName="detailsStatistics"></textarea>
+                            </div>
+                      </div>
+                      <div class="col-md-6">    
+                        <div class="form-group">
+                          <label attr.for="{{'company' + i}}" class="label">Company<span>*</span></label><br>
+                          <nb-select fullWidth placeholder="Select Company" id="{{'company' + i}}" formControlName="companyId">
+                            <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                          </nb-select>
+                        </div>
+                          <div class="form-group">
+                            <label attr.for="{{'remarks' + i}}" class="label">Remarks</label>
+                            <textarea rows="5" nbInput fullWidth id="{{'remarks' + hsei}}"  placeholder="Remarks" formControlName="remarks"></textarea>
+                          </div>
+                      </div>
+                    </div>
+            </div>
+            <button type="button" [disabled]= "(srdrHSEReports.controls[srdrHSEReports.length-1].pristine)" (click)="addHse()" nbButton outline [status]="'info'" [size]="'medium'">
+              <nb-icon icon="plus-outline"></nb-icon> Add
+            </button>
+            <div class="row mt-2" >
+                <div class="col-md-6">
+                <div class="form-group">
+                <label for="ptw">Permit to Work</label><br>
+                <!-- <div class="custom-file">
+                  <input type="file" class="custom-file-input" #file (change)="onFilesAdded($event)" id="customFile" name="filename">
+                  <label class="custom-file-label" for="customFile">Choose file</label>
+                </div> -->
+                <ngx-file-picker [id]="1" (fileSelected)="onFileSelectedPW($event)"></ngx-file-picker>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+              <label for="securityReport">Security Report </label><br>
+              <!-- <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile" name="filename">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+              </div> -->
+              <ngx-file-picker [id]="2" (fileSelected)="onFileSelectedSR($event)"></ngx-file-picker>
+            </div>
+            </div>
+            </div>
+            </ng-container>
+            <button  type="button" (click)="onHseReportSubmit()"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+        </form>
+
+        <form [formGroup]="constructionActivitiesForm" *ngIf="nstage == 3">
+            <div class="row" >
+                <div class="col-md-6">       
+                    <div class="form-group">
+                      <label for="project" class="label">Project<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                        <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                      </nb-select>
+                    </div>  
+                    <div class="form-group">
+                      <label for="constructionactivities" class="label">CONSTRUCTION ACTIVITIES<span>*</span></label>
+                      <textarea formControlName="constructionActivities" rows="5" nbInput fullWidth id="constructionactivities"  placeholder="CONSTRUCTION ACTIVITIES"></textarea>
+                    </div>  
+                    <div class="form-group">
+                      <label for="planFollowDay" class="label">PLANNING FOR THE FOLLOWING DAY<span>*</span> </label>
+                      <textarea formControlName="followingDayPlan" rows="5" nbInput fullWidth id="planFollowDay"  placeholder="PLANNING FOR THE FOLLOWING DAY "></textarea>
+                    </div>
+              </div>
+              <div class="col-md-6">         
+                <div class="form-group">
+                    <label for="company" class="label">Company<span>*</span></label><br>
+                    <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                      <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                    </nb-select>
+                  </div>
+                  <div class="form-group">
+                    <label for="dailyProgress" class="label">DAILY PROGRESS / WORK DONE<span>*</span></label>
+                    <textarea formControlName="dailyProgress" rows="5" nbInput fullWidth id="dailyProgress"  placeholder="DAILY PROGRESS / WORK DONE"></textarea>
+                  </div>
+            </div>
+            </div>
+            <button  type="button" (click)="onConstructionActiviesSubmit()"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+        </form>
+            
+        <form [formGroup]="dailyProgressMeasurementForm" *ngIf="nstage == 4">
+            <div class="container" >
+                <div class="row" formGroupName="srdrProMeMaster">
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="project" class="label">Project<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                        <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                      </nb-select>
+                    </div>     
+                    <div class="form-group" >
+                      <label for="progressAt">Progress at<span>*</span></label>
+                      <input type="text" formControlName="progressAt" nbInput fullWidth id="progressAt"  placeholder="Progress at"/>
+                    </div>  
+                    <div class="form-group" >
+                      <label for="Planned">Planned<span>*</span></label>
+                      <input type="number" step=".01" formControlName="planned" nbInput fullWidth id="Planned"  placeholder="Planned"/>
+                    </div>
+              </div>
+              <div class="col-md-6">        
+                <div class="form-group">
+                    <label for="company" class="label">Company<span>*</span></label><br>
+                    <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                      <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                    </nb-select>
+                  </div>
+                  <div class="form-group" >
+                    <label for="constructionActual">Construction Actual<span>*</span></label>
+                    <input type="number" step=".01" formControlName="constructionActual" nbInput fullWidth id="constructionActual"  placeholder="Construction Actual"/>
+                  </div>
+            </div>
+                </div>
+                <div class="row"> 
+                <div class="container" formArrayName="srdrProgressMeasurements" *ngFor="let dailyRepMes of srdrProgressMeasurements.controls; let i =index">
+                    <div  class="row" [formGroupName]="i">
+                        <div class="col-md-6"> 
+                            <div class="form-group">
+                              <label attr.for="{{'activity' + i}}" class="label">activity<span>*</span></label>
+                              <textarea formControlName="activity" rows="5" nbInput fullWidth id="{{'activity' + i}}"  placeholder="activity"></textarea>
+                            </div> 
+                            <div class="form-group">
+                              <label attr.for="{{'CumProgressActual' + i}}">Cum Progress Actual %<span>*</span></label>
+                              <input formControlName="cumProgressActual" type="number" step=".01" nbInput fullWidth id="{{'CumProgressActual' + i}}" placeholder="Cum Progress Actual %">
+                            </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label attr.for="{{'remarks' + i}}" class="label">Remarks<span>*</span></label>
+                            <textarea formControlName="remarks" rows="5" nbInput fullWidth id="{{'remarks' + i}}"  placeholder="Remarks"></textarea>
+                          </div>
+                          <div class="form-group">
+                            <label attr.for="{{'cumPlannedProgress ' + i}}">Cum Planned Progress %<span>*</span></label>
+                            <input formControlName="cumPlannedProgress" type="number" step=".01" nbInput fullWidth id="{{'cumPlannedProgress' + i}}" placeholder="Cum Planned Progress %">
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <button type="button" [disabled]= "(srdrProgressMeasurements.controls[srdrProgressMeasurements.length-1].pristine)" (click)="addDailyReportingProgress()" nbButton outline [status]="'info'" [size]="'medium'">
+                  <nb-icon icon="plus-outline"></nb-icon> Add
+                </button>
+                </div>
+                <div class="row"> 
+                <div class="container" formArrayName="srdrIssues" *ngFor="let dailyRepIssue of srdrIssues.controls; let i =index">
+                    <div  class="row" [formGroupName]="i">
+                        <div class="col-md-6"> 
+                            <div class="form-group">
+                              <label attr.for="{{'challenges ' + i}}" class="label">Challenges </label>
+                              <textarea formControlName="challenges" rows="5" nbInput fullWidth id="{{'challenges ' + i}}"  placeholder="Challenges "></textarea>
+                            </div> 
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label attr.for="{{'recommendation' + i}}" class="label">Actions Taken / Recommendations </label>
+                            <textarea formControlName="recommendations" rows="5" nbInput fullWidth id="{{'recommendation' + i}}"  placeholder="Actions Taken / Recommendations "></textarea>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <button type="button" [disabled]= "(srdrIssues.controls[srdrIssues.length-1].pristine)" (click)="addDailyReportingIssues()" nbButton outline [status]="'info'" [size]="'medium'">
+                  <nb-icon icon="plus-outline"></nb-icon> Add
+                </button>
+                </div>
+                <div class="row"> 
+                <div class="container" formArrayName="srdrDelays" *ngFor="let dailyRepDelay of srdrDelays.controls; let i =index">
+                    <div  class="row" [formGroupName]="i">
+                        <div class="col-md-6"> 
+                            <div class="form-group">
+                              <label attr.for="{{'descriptionOfDelay ' + i}}" class="label">description Of Delay </label>
+                              <textarea formControlName="descriptionOfDelay" rows="5" nbInput fullWidth id="{{'descriptionOfDelay ' + i}}"  placeholder="description Of Delay "></textarea>
+                            </div> 
+                            <div class="form-group">
+                              <label attr.for="{{'timeTaken ' + i}}" class="label">Time Taken </label>
+                              <input formControlName="timeTaken" nbInput fullWidth id="{{'timeTaken ' + i}}" [nbDatepicker]="dateTimePicker" placeholder="Time Taken"/>
+                              <nb-datepicker #dateTimePicker></nb-datepicker>
+                            </div> 
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label attr.for="{{'cause' + i}}" class="label">Cause </label>
+                            <textarea formControlName="cause" rows="5" nbInput fullWidth id="{{'cause' + i}}"  placeholder="cause "></textarea>
+                          </div>
+                          <div class="form-group">
+                            <label attr.for="{{'responsible ' + i}}" class="label">Responsible </label>
+                            <input type="text" formControlName="responsible" nbInput fullWidth id="{{'responsible ' + i}}"  placeholder="Responsible"/>
+                          </div> 
+                      </div>
+                    </div>
+                </div>
+                <button type="button" [disabled]= "(srdrDelays.controls[srdrDelays.length-1].pristine)" (click)="addDailyReportingDelays()" nbButton outline [status]="'info'" [size]="'medium'">
+                  <nb-icon icon="plus-outline"></nb-icon> Add
+                </button>
+                </div>
+            </div>
+            <button  type="button" (click)="onProgressMeasurementSubmit()"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+        </form>
+
+            <form [formGroup]="progressPicturesForm" *ngIf="nstage == 5">
+            <div class="row" >
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="project" class="label">Project<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                        <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                      </nb-select>
+                    </div>   
+                <div class="form-group">
+                <label for="PP" class="label">progress Pictures</label><br>
+                <ngx-file-picker [id]="1" (fileSelected)="onFileSelectedPP($event)"></ngx-file-picker>
+              </div>
+            </div>
+            <div class="col-md-6">      
+                <div class="form-group">
+                    <label for="company" class="label">Company<span>*</span></label><br>
+                    <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                      <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                    </nb-select>
+                  </div>
+            </div>
+            </div>
+            <button  type="button" (click)="onProgressPictureSubmit()"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+            </form>
+
+        <form [formGroup]="otherSiteForm" *ngIf="nstage == 6">
+        <div class="row" >
+            <div class="col-md-6">      
+                <div class="form-group">
+                  <label for="project" class="label">Project<span>*</span></label><br>
+                  <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                    <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                  </nb-select>
+                </div> 
+          <div class="form-group">
+          <label for="lR" class="label">Logistics Report</label><br>
+          <ngx-file-picker [id]="1" (fileSelected)="onFileSelectedLR($event)"></ngx-file-picker>
+        </div>
+        <div class="form-group">
+        <label for="MR" class="label">Material Report</label><br>
+        <ngx-file-picker [id]="2" (fileSelected)="onFileSelectedMR($event)"></ngx-file-picker>
+      </div>
+      <div class="form-group">
+      <label for="QAR" class="label">QA/QC Report</label><br>
+      <ngx-file-picker [id]="3" (fileSelected)="onFileSelectedQAC($event)"></ngx-file-picker>
+    </div>
+        </div>
+        <div class="col-md-6">      
+            <div class="form-group">
+                <label for="company" class="label">Company<span>*</span></label><br>
+                <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                  <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                </nb-select>
+              </div>
+        <div class="form-group">
+        <label for="SPL" class="label">Site Personnel Log</label><br>
+        <ngx-file-picker [id]="4" (fileSelected)="onFileSelectedSPL($event)"></ngx-file-picker>
+      </div>
+      <div class="form-group">
+      <label for="MCR" class="label">Management of Change Report</label><br>
+      <ngx-file-picker [id]="5" (fileSelected)="onFileSelectedMCR($event)"></ngx-file-picker>
+    </div>
+        </div>
+        </div>
+        <button  type="button" (click)="onOtherSiteSubmit()"  nbButton [status]="'success'" [size]="'medium'">
+          Submit
+        </button>
+        </form>
+</nb-card-body>
+<div class="spacebtn" *ngIf="false">
+<button (click)="onBack()"  type="button" nbButton [disabled]="nstage < 2" outline [status]="'success'" [size]="'medium'">
+  Back
+</button>
+<button type="button" (click)="onNext()" *ngIf="nstage < 6" nbButton outline [status]="'success'" [size]="'medium'">
+  Next
+</button>
+<!-- <button  type="button"  (click)="onSubmit()"  *ngIf="nstage == 5" nbButton outline [status]="'success'" [size]="'medium'">
+  Submit
+</button> -->
+</div>
+</nb-card>
+<!-- <br> value:{{dailyReport.value | json}} -->

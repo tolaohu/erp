@@ -1,0 +1,92 @@
+
+    <nb-card style="min-height: 400px;" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="Saving ..." nbSpinnerSize="large">
+        <nb-card-header style="text-align: center;" >HSE Report</nb-card-header>
+        <nb-card-body>
+
+        <form [formGroup]="hseReportForm">
+            <ng-container>
+                <div  class="container" formArrayName="srdrHSEReports" *ngFor="let hseRep of srdrHSEReports.controls; let hsei =index">
+                    <div  class="row" [formGroupName]="hsei">
+                        <div class="col-md-6">      
+                            <div class="form-group">
+                              <label attr.for="{{'project' + hsei}}">Project<span>*</span></label><br>
+                              <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                                <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                              </nb-select>
+                            </div>  
+                            <div class="form-group" *ngIf="show">
+                              <label attr.for="{{'title' + hsei}}">Title<span>*</span></label>
+                              <input type="text" nbInput fullWidth id="{{'title' + hsei}}" placeholder="Title" formControlName="title">
+                              <span style="color:#dc3545" *ngIf=" (this.srdrHSEReports.controls[hsei].get('title').touched) && (this.srdrHSEReports.controls[hsei].get('title').errors?.required)">
+                                Title is a required Field !!!
+                              </span>
+                            </div>
+                            <div class="form-group" *ngIf="show">
+                              <label attr.for="{{'detailsStat' + hsei}}">Details/Statistics<span>*</span></label>
+                              <textarea nbInput fullWidth id="{{'detailsStat' + hsei}}"  placeholder="Details Statistics" formControlName="detailsStatistics"></textarea>
+                              <span style="color:#dc3545" *ngIf=" (this.srdrHSEReports.controls[hsei].get('detailsStatistics').touched) && (this.srdrHSEReports.controls[hsei].get('detailsStatistics').errors?.required)">
+                                Details/Statistics is a required Field !!!
+                              </span>
+                            </div>
+                      </div>
+                      <div class="col-md-6" *ngIf="show">    
+                        <div class="form-group">
+                          <label attr.for="{{'company' + i}}">Company<span>*</span></label><br>
+                          <nb-select fullWidth placeholder="Select Company" id="{{'company' + i}}" formControlName="companyId">
+                            <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                          </nb-select>
+                          <span style="color:#dc3545" *ngIf=" (this.srdrHSEReports.controls[hsei].get('companyId').touched) && (this.srdrHSEReports.controls[hsei].get('companyId').errors?.required)">
+                            Company is a required Field !!!
+                          </span>
+                        </div>
+                          <div class="form-group">
+                            <label attr.for="{{'remarks' + i}}">Remarks<span>*</span></label>
+                            <textarea rows="5" nbInput fullWidth id="{{'remarks' + hsei}}"  placeholder="Remarks" formControlName="remarks"></textarea>
+                            <span>
+                              <!-- <span style="color:#dc3545" *ngIf=" (this.srdrHSEReports.controls[hsei].get('remarks').touched) && (this.srdrHSEReports.controls[hsei].get('remarks').errors?.required)">
+                                Remarks is a required Field !!!
+                              </span> -->
+                              <span style="color:#dc3545" *ngIf=" (this.srdrHSEReports.controls[hsei].get('remarks').dirty) && (this.srdrHSEReports.controls[hsei].get('remarks').errors?.minlength)">
+                               Minimum Length of words is 250 !!!
+                              </span>
+                            </span>
+                          </div>
+                      </div>
+                    </div>
+            </div>
+            <button *ngIf="show" type="button" class="mb-4 mr-2" [disabled]= "(!srdrHSEReports.valid)" (click)="addHse()" nbButton outline [status]="'info'" [size]="'small'">
+              <nb-icon icon="plus-outline"></nb-icon> Add
+            </button>
+            <button *ngIf="show" type="button" class="mb-4" [disabled]= "(srdrHSEReports.length < 2)" (click)="removeHse(srdrHSEReports.length - 1)" nbButton outline [status]="'info'" [size]="'small'">
+              <nb-icon icon="close-outline"></nb-icon> Remove
+            </button>
+            <div class="row mt-2" *ngIf="show" >
+                <div class="col-md-6">
+                <div class="form-group">
+                <label for="ptw">Permit to Work</label><br>
+                <!-- <div class="custom-file">
+                  <input type="file" class="custom-file-input" #file (change)="onFilesAdded($event)" id="customFile" name="filename">
+                  <label class="custom-file-label" for="customFile">Choose file</label>
+                </div> -->
+                <ngx-file-picker [id]="1" (fileSelected)="onFileSelectedPW($event)"></ngx-file-picker>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+              <label for="securityReport">Security Report </label><br>
+              <!-- <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile" name="filename">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+              </div> -->
+              <ngx-file-picker [id]="2" (fileSelected)="onFileSelectedSR($event)"></ngx-file-picker>
+            </div>
+            </div>
+            </div>
+            </ng-container>
+            <button *ngIf="show" type="button" [disabled]="!this.hseReportForm.valid" (click)="onHseReportSubmit()"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+        </form>
+</nb-card-body>
+</nb-card>
+<!-- <br> value:{{hseReportForm.value | json}} -->

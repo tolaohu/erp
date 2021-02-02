@@ -1,0 +1,145 @@
+
+    <nb-card style="min-height: 400px;" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="Saving ..." nbSpinnerSize="large">
+     <nb-card-header style="text-align: center;">Project Measureement</nb-card-header>
+        <nb-card-body>
+            
+        <form [formGroup]="dailyProgressMeasurementForm">
+            <div class="container" >
+                <div class="row" formGroupName="srdrProMeMaster">
+                <div class="col-md-6">      
+                    <div class="form-group">
+                      <label for="project">Project<span>*</span></label><br>
+                      <nb-select fullWidth placeholder="Select Project" id="project" (selectedChange)="onReportSelect($event)" formControlName="projectId">
+                        <nb-option [value]="item.projectId"  *ngFor="let item of projectList">{{item.projectName}}</nb-option>
+                      </nb-select>
+                    </div>     
+                    <div class="form-group" *ngIf="show">
+                      <label for="progressAt">Progress At<span>*</span></label>
+                      <input type="text" formControlName="progressAt" nbInput fullWidth id="progressAt"  placeholder="Progress at"/>
+                    </div>  
+                    <div class="form-group" *ngIf="show" >
+                      <label for="Planned">Planned<span>*</span></label>
+                      <input type="number" step=".01" formControlName="planned" nbInput fullWidth id="Planned"  placeholder="Planned"/>
+                    </div>
+              </div>
+              <div class="col-md-6" *ngIf="show">        
+                <div class="form-group">
+                    <label for="company">Company<span>*</span></label><br>
+                    <nb-select fullWidth placeholder="Select Company" id="company" formControlName="companyId">
+                      <nb-option [value]="item.companyId"  *ngFor="let item of companyList">{{item.companyName}}</nb-option>
+                    </nb-select>
+                  </div>
+                  <div class="form-group" >
+                    <label for="constructionActual">Construction Actual<span>*</span></label>
+                    <input type="number" step=".01" formControlName="constructionActual" nbInput fullWidth id="constructionActual"  placeholder="Construction Actual"/>
+                  </div>
+            </div>
+                </div>
+                <div class="row" *ngIf="show"> 
+                <div class="container" formArrayName="srdrProgressMeasurements" *ngFor="let dailyRepMes of srdrProgressMeasurements.controls; let i =index">
+                    <div  class="row" [formGroupName]="i">
+                        <div class="col-md-6"> 
+                            <div class="form-group">
+                              <label attr.for="{{'activity' + i}}" >Activity<span>*</span></label>
+                              <textarea formControlName="activity" rows="5" nbInput fullWidth id="{{'activity' + i}}"  placeholder="activity"></textarea>
+                            </div> 
+                            <div class="form-group">
+                              <label attr.for="{{'CumProgressActual' + i}}">Cum Progress Actual % <span>*</span></label>
+                              <input formControlName="cumProgressActual" type="number" step=".01" nbInput fullWidth id="{{'CumProgressActual' + i}}" placeholder="Cum Progress Actual %">
+                            </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label attr.for="{{'remarks' + i}}">Remarks<span>*</span></label>
+                            <textarea formControlName="remarks" rows="5" nbInput fullWidth id="{{'remarks' + i}}"  placeholder="Remarks"></textarea>
+                          </div>
+                          <div class="form-group">
+                            <label attr.for="{{'cumPlannedProgress ' + i}}">Cum Planned Progress %<span>*</span></label>
+                            <input formControlName="cumPlannedProgress" type="number" step=".01" nbInput fullWidth id="{{'cumPlannedProgress' + i}}" placeholder="Cum Planned Progress %">
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <button type="button" class="mb-4 mr-2" [disabled]= "(!srdrProgressMeasurements.valid)" (click)="addDailyReportingProgress()" nbButton outline [status]="'info'" [size]="'small'">
+                  <nb-icon icon="plus-outline"></nb-icon> Add
+                </button>
+                <button type="button" class="mb-4" [disabled]= "(srdrProgressMeasurements.length < 2)" (click)="removeDailyReportingProgress(srdrProgressMeasurements.length - 1)" nbButton outline [status]="'info'" [size]="'small'">
+                  <nb-icon icon="close-outline"></nb-icon> Remove
+                </button>
+                </div>
+                <div class="row" *ngIf="show"> 
+                <div class="container" formArrayName="srdrIssues" *ngFor="let dailyRepIssue of srdrIssues.controls; let i =index">
+                    <div  class="row" [formGroupName]="i">
+                        <div class="col-md-6"> 
+                            <div class="form-group">
+                              <label attr.for="{{'challenges ' + i}}">Challenges </label>
+                              <textarea formControlName="challenges" rows="5" nbInput fullWidth id="{{'challenges ' + i}}"  placeholder="Challenges "></textarea>
+                            </div> 
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label attr.for="{{'recommendation' + i}}">Actions Taken / Recommendations </label>
+                            <textarea formControlName="recommendations" rows="5" nbInput fullWidth id="{{'recommendation' + i}}"  placeholder="Actions Taken / Recommendations "></textarea>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <!-- [disabled]= "((!challenges.value) && (!recommendations.value))" -->
+                <button type="button" class="mb-4 mr-2" [disabled]= "!srdrIssues.valid" (click)="addDailyReportingIssues()" nbButton outline [status]="'info'" [size]="'small'">
+                  <nb-icon icon="plus-outline"></nb-icon> Add
+                </button>
+                <button type="button" class="mb-4" [disabled]= "(srdrIssues.length < 2)" (click)="removeDailyReportingIssues(srdrIssues.length - 1)" nbButton outline [status]="'info'" [size]="'small'">
+                  <nb-icon icon="close-outline"></nb-icon> Remove
+                </button>
+                </div>
+                <div class="row" *ngIf="show"> 
+                <div class="container" formArrayName="srdrDelays" *ngFor="let dailyRepDelay of srdrDelays.controls; let i =index">
+                    <div  class="row" [formGroupName]="i">
+                        <div class="col-md-6"> 
+                            <div class="form-group">
+                              <label attr.for="{{'descriptionOfDelay ' + i}}">Description Of Delay </label>
+                              <textarea formControlName="descriptionOfDelay" rows="5" nbInput fullWidth id="{{'descriptionOfDelay ' + i}}"  placeholder="description Of Delay "></textarea>
+                            </div> 
+                            <div class="form-group">
+                              <label attr.for="{{'timeTaken ' + i}}">Time Taken (hrs) </label>
+                              <input type="number" formControlName="timeTaken" nbInput fullWidth id="{{'timeTaken ' + i}}" placeholder="Time Taken"/>
+                            </div>  
+                            <div class="form-group">
+                              <label attr.for="{{'timeTakenFrom ' + i}}">Time Taken From</label>
+                              <input formControlName="timeTakenFrom" nbInput fullWidth id="{{'timeTakenFrom ' + i}}" [nbDatepicker]="timeTakenFrom" placeholder="Time Taken"/>
+                              <nb-datepicker #timeTakenFrom></nb-datepicker>
+                            </div> 
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                            <label attr.for="{{'cause' + i}}">Cause </label>
+                            <textarea formControlName="cause" rows="5" nbInput fullWidth id="{{'cause' + i}}"  placeholder="cause "></textarea>
+                          </div>
+                          <div class="form-group">
+                            <label attr.for="{{'responsible ' + i}}">Responsible </label>
+                            <input type="text" formControlName="responsible" nbInput fullWidth id="{{'responsible ' + i}}"  placeholder="Responsible"/>
+                          </div>  
+                          <div class="form-group">
+                            <label attr.for="{{'timeTakenTo ' + i}}">Time Taken To</label>
+                            <input formControlName="timeTakenTo" nbInput fullWidth id="{{'timeTakenTo ' + i}}" [nbDatepicker]="timeTakenTo" placeholder="Time Taken"/>
+                            <nb-datepicker #timeTakenTo></nb-datepicker>
+                          </div> 
+                      </div>
+                    </div>
+                </div>
+                <!-- [disabled]= "(!delay.value)" -->
+                <button type="button" class="mb-4 mr-2" [disabled]= "(!srdrDelays.valid)" (click)="addDailyReportingDelays()" nbButton outline [status]="'info'" [size]="'small'">
+                  <nb-icon icon="plus-outline"></nb-icon> Add
+                </button>
+                <button type="button" class="mb-4" [disabled]= "(srdrDelays.length < 2)" (click)="removeDailyReportingDelays(srdrDelays.length - 1)" nbButton outline [status]="'info'" [size]="'small'">
+                  <nb-icon icon="close-outline"></nb-icon> Remove
+                </button>
+                </div>
+            </div>
+            <button *ngIf="show" type="button" [disabled]="!this.dailyProgressMeasurementForm.valid" (click)="onProgressMeasurementSubmit()"  nbButton [status]="'success'" [size]="'medium'">
+              Submit
+            </button>
+        </form>
+</nb-card-body>
+</nb-card>
+<!-- <br> value:{{dailyProgressMeasurementForm.value | json}} -->

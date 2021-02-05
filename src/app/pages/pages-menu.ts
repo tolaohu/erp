@@ -12,6 +12,7 @@ import { Injectable } from '@angular/core';
 export class PagesMenu {
 
   getMenu(): Observable<NbMenuItem[]> {
+    // const role = localStorage.getItem('roles');
     const dashboardMenu: NbMenuItem[] = [
       {
         title: 'Dashboard',
@@ -56,7 +57,7 @@ export class PagesMenu {
             ]
           },
           {
-            title: 'Construction Report',
+            title: 'Construction Technical Report',
             link: '/pages/construction-Reporting',
           },
           {
@@ -70,6 +71,7 @@ export class PagesMenu {
         icon: 'person-outline',
         link: '/pages/register-user',
         children: undefined,
+        // hidden: !role.includes('checker')
       },
       // {
       //   title: 'Transaction',

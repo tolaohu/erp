@@ -1,6 +1,6 @@
 
     <nb-card style="min-height: 400px;" [nbSpinner]="processing" nbSpinnerStatus="success" nbSpinnerMessage="Saving ..." nbSpinnerSize="large">
-     <nb-card-header style="text-align: center;">Project Measureement</nb-card-header>
+     <nb-card-header style="text-align: center;">Project Measurement</nb-card-header>
         <nb-card-body>
             
         <form [formGroup]="dailyProgressMeasurementForm">
@@ -19,7 +19,7 @@
                     </div>  
                     <div class="form-group" *ngIf="show" >
                       <label for="Planned">Planned<span>*</span></label>
-                      <input type="number" step=".01" formControlName="planned" nbInput fullWidth id="Planned"  placeholder="Planned"/>
+                      <input type="number" step=".1" formControlName="planned" nbInput fullWidth id="Planned"  placeholder="Planned"/>
                     </div>
               </div>
               <div class="col-md-6" *ngIf="show">        
@@ -31,7 +31,7 @@
                   </div>
                   <div class="form-group" >
                     <label for="constructionActual">Construction Actual<span>*</span></label>
-                    <input type="number" step=".01" formControlName="constructionActual" nbInput fullWidth id="constructionActual"  placeholder="Construction Actual"/>
+                    <input type="number" step=".1" formControlName="constructionActual" nbInput fullWidth id="constructionActual"  placeholder="Construction Actual"/>
                   </div>
             </div>
                 </div>
@@ -44,8 +44,8 @@
                               <textarea formControlName="activity" rows="5" nbInput fullWidth id="{{'activity' + i}}"  placeholder="activity"></textarea>
                             </div> 
                             <div class="form-group">
-                              <label attr.for="{{'CumProgressActual' + i}}">Cum Progress Actual % <span>*</span></label>
-                              <input formControlName="cumProgressActual" type="number" step=".01" nbInput fullWidth id="{{'CumProgressActual' + i}}" placeholder="Cum Progress Actual %">
+                              <label attr.for="{{'CumProgressActual' + i}}">Cummulative Progress Actual % <span>*</span></label>
+                              <input formControlName="cumProgressActual" type="number" step=".1" nbInput fullWidth id="{{'CumProgressActual' + i}}" placeholder="Cum Progress Actual %">
                             </div>
                       </div>
                       <div class="col-md-6">
@@ -54,8 +54,8 @@
                             <textarea formControlName="remarks" rows="5" nbInput fullWidth id="{{'remarks' + i}}"  placeholder="Remarks"></textarea>
                           </div>
                           <div class="form-group">
-                            <label attr.for="{{'cumPlannedProgress ' + i}}">Cum Planned Progress %<span>*</span></label>
-                            <input formControlName="cumPlannedProgress" type="number" step=".01" nbInput fullWidth id="{{'cumPlannedProgress' + i}}" placeholder="Cum Planned Progress %">
+                            <label attr.for="{{'cumPlannedProgress ' + i}}">Cummulative Planned Progress %<span>*</span></label>
+                            <input formControlName="cumPlannedProgress" type="number" step=".1" nbInput fullWidth id="{{'cumPlannedProgress' + i}}" placeholder="Cum Planned Progress %">
                           </div>
                       </div>
                     </div>

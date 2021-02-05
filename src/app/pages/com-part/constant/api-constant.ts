@@ -1,5 +1,6 @@
 export const DailyReport = {
-    project:'/api/v1/projects',
+    // project:'/api/v1/projects',
+    project:'/api/v1/miscellaneous/GetAllProjects',
     save:'/api/v1/sitereports/CreateDailySiteReport',
 
 

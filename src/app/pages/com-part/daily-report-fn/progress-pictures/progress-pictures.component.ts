@@ -66,7 +66,8 @@ onProgressPictureSubmit(){
     return this.fb.group({
     projectId: [null, Validators.required],
     companyId: [null, Validators.required],
-    progressPictures: [null, Validators.required]
+    progressPictures: [null, Validators.required],
+    description:[null, Validators.minLength(500)]
     })
   }
  

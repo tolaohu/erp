@@ -10,9 +10,10 @@
     "url": "https://github.com/akveo/ngx-admin-bundle-support/issues"
   },
   "scripts": {
+    "heroku-postbuild": "ng build --prod",
     "ng": "ng",
     "conventional-changelog": "conventional-changelog",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "build:prod": "npm run build -- --prod",
     "test": "ng test",
@@ -29,7 +30,14 @@
     "release:changelog": "npm run conventional-changelog -- -p angular -i CHANGELOG.md -s",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
+  "engines": {
+    "node": "14.15.1",
+    "npm": "6.14.8"
+  },
+
   "dependencies": {
+    "@angular/cli": "^10.0.6",
+    "@angular/compiler-cli": "^10.0.11",
     "@akveo/ng2-completer": "^9.0.1",
     "@angular/animations": "^10.0.11",
     "@angular/cdk": "^10.1.3",
@@ -77,7 +85,8 @@
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.10.3",
     "@ngrx/store": "^10.1.0",
-    "@ngrx/store-devtools": "^10.1.0"
+    "@ngrx/store-devtools": "^10.1.0",
+    "typescript": "3.9.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.6",

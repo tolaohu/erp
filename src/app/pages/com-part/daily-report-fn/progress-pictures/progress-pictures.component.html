@@ -27,6 +27,18 @@
                       Company is a required Field !!!
                     </span>
                   </div>
+                  <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea rows="5" nbInput fullWidth id="description"  placeholder="Description" formControlName="description"></textarea>
+                    <span>
+                    <!-- <span style="color:#dc3545" *ngIf=" (progressPicturesForm.get('description').touched) && (progressPicturesForm.get('description').errors?.required)">
+                      Description is a required Field !!!
+                    </span> -->
+                    <span style="color:#dc3545" *ngIf=" (progressPicturesForm.get('description').dirty) && (progressPicturesForm.get('description').errors?.minlength)">
+                     Minimum Length of words is 500 !!!
+                    </span>
+                  </span>
+                  </div>
             </div>
             </div>
             </form>

@@ -86,7 +86,8 @@
     "zone.js": "~0.10.3",
     "@ngrx/store": "^10.1.0",
     "@ngrx/store-devtools": "^10.1.0",
-    "typescript": "3.9.7"
+    "typescript": "3.9.7",
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.6",
